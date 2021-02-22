@@ -7,7 +7,7 @@ import {
 import {
 	LanguageClient,
 	ServerOptions,
-	Executable,
+	Executable
 } from 'vscode-languageclient/node';
 import ShortUniqueId from 'short-unique-id';
 
@@ -26,6 +26,7 @@ interface terraformLanguageClient {
 	commandPrefix: string,
 	client: LanguageClient
 }
+import { TFCloudView } from './tfCloudView';
 
 const shortUid = new ShortUniqueId();
 const clients: Map<string, terraformLanguageClient> = new Map();
@@ -42,6 +43,9 @@ export async function activate(context: vscode.ExtensionContext): Promise<any> {
 			console.error(`Error trying to erase pre-2.0.0 settings: ${err.message}`);
 		}
 	}
+
+	// Create Terraform Cloud views
+	new TFCloudView(context);
 
 	// Subscriptions
 	context.subscriptions.push(
